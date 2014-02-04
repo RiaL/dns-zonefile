@@ -53,7 +53,7 @@ grammar Zonefile
   end
 
   rule resource_record
-    record:(a_record / aaaa_record / cname_record / mx_record / naptr_record / ns_record / ptr_record / srv_record / spf_record / txt_record / soa_record) space* comment? linebreak {
+    record:(a_record / aaaa_record / cname_record / mx_record / naptr_record / ns_record / ptr_record / srv_record / spf_record / txt_record / soa_record / alias_record) space* comment? linebreak {
       def zone
         p = parent
         while p.respond_to?(:parent) && p.parent
@@ -198,6 +198,19 @@ grammar Zonefile
     host space ttl klass "TXT" space data:txt_data {
       def to_s
         "#{host} #{ttl} #{klass} TXT #{data}"
+      end
+    }
+  end
+
+  rule alias_record
+    (
+     host space ttl klass "ALIAS" space target:host /
+     host space klass ttl "ALIAS" space target:host /
+     host space ttl "ALIAS" space target:host /
+     host space klass "ALIAS" space target:host 
+    ) {
+      def to_s
+        "#{host} #{ttl} #{klass} ALIAS #{target}"
       end
     }
   end

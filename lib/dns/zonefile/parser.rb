@@ -619,8 +619,13 @@ module DNS
                             if r12
                               r1 = r12
                             else
-                              @index = i1
-                              r1 = nil
+                              r13 = _nt_alias_record
+                              if r13
+                                r1 = r13
+                              else
+                                @index = i1
+                                r1 = nil
+                              end
                             end
                           end
                         end
@@ -634,28 +639,28 @@ module DNS
         end
         s0 << r1
         if r1
-          s13, i13 = [], index
+          s14, i14 = [], index
           loop do
-            r14 = _nt_space
-            if r14
-              s13 << r14
+            r15 = _nt_space
+            if r15
+              s14 << r15
             else
               break
             end
           end
-          r13 = instantiate_node(SyntaxNode,input, i13...index, s13)
-          s0 << r13
-          if r13
-            r16 = _nt_comment
-            if r16
-              r15 = r16
+          r14 = instantiate_node(SyntaxNode,input, i14...index, s14)
+          s0 << r14
+          if r14
+            r17 = _nt_comment
+            if r17
+              r16 = r17
             else
-              r15 = instantiate_node(SyntaxNode,input, index...index)
+              r16 = instantiate_node(SyntaxNode,input, index...index)
             end
-            s0 << r15
-            if r15
-              r17 = _nt_linebreak
-              s0 << r17
+            s0 << r16
+            if r16
+              r18 = _nt_linebreak
+              s0 << r18
             end
           end
         end
@@ -2509,6 +2514,300 @@ module DNS
         end
 
         node_cache[:txt_record][start_index] = r0
+
+        r0
+      end
+
+      module AliasRecord0
+        def host
+          elements[0]
+        end
+
+        def space1
+          elements[1]
+        end
+
+        def ttl
+          elements[2]
+        end
+
+        def klass
+          elements[3]
+        end
+
+        def space2
+          elements[5]
+        end
+
+        def target
+          elements[6]
+        end
+      end
+
+      module AliasRecord1
+        def host
+          elements[0]
+        end
+
+        def space1
+          elements[1]
+        end
+
+        def klass
+          elements[2]
+        end
+
+        def ttl
+          elements[3]
+        end
+
+        def space2
+          elements[5]
+        end
+
+        def target
+          elements[6]
+        end
+      end
+
+      module AliasRecord2
+        def host
+          elements[0]
+        end
+
+        def space1
+          elements[1]
+        end
+
+        def ttl
+          elements[2]
+        end
+
+        def space2
+          elements[4]
+        end
+
+        def target
+          elements[5]
+        end
+      end
+
+      module AliasRecord3
+        def host
+          elements[0]
+        end
+
+        def space1
+          elements[1]
+        end
+
+        def klass
+          elements[2]
+        end
+
+        def space2
+          elements[4]
+        end
+
+        def target
+          elements[5]
+        end
+      end
+
+      module AliasRecord4
+        def to_s
+          "#{host} #{ttl} #{klass} ALIAS #{target}"
+        end
+      end
+
+      def _nt_alias_record
+        start_index = index
+        if node_cache[:alias_record].has_key?(index)
+          cached = node_cache[:alias_record][index]
+          if cached
+            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+            @index = cached.interval.end
+          end
+          return cached
+        end
+
+        i0 = index
+        i1, s1 = index, []
+        r2 = _nt_host
+        s1 << r2
+        if r2
+          r3 = _nt_space
+          s1 << r3
+          if r3
+            r4 = _nt_ttl
+            s1 << r4
+            if r4
+              r5 = _nt_klass
+              s1 << r5
+              if r5
+                if has_terminal?("ALIAS", false, index)
+                  r6 = instantiate_node(SyntaxNode,input, index...(index + 5))
+                  @index += 5
+                else
+                  terminal_parse_failure("ALIAS")
+                  r6 = nil
+                end
+                s1 << r6
+                if r6
+                  r7 = _nt_space
+                  s1 << r7
+                  if r7
+                    r8 = _nt_host
+                    s1 << r8
+                  end
+                end
+              end
+            end
+          end
+        end
+        if s1.last
+          r1 = instantiate_node(SyntaxNode,input, i1...index, s1)
+          r1.extend(AliasRecord0)
+        else
+          @index = i1
+          r1 = nil
+        end
+        if r1
+          r0 = r1
+          r0.extend(AliasRecord4)
+        else
+          i9, s9 = index, []
+          r10 = _nt_host
+          s9 << r10
+          if r10
+            r11 = _nt_space
+            s9 << r11
+            if r11
+              r12 = _nt_klass
+              s9 << r12
+              if r12
+                r13 = _nt_ttl
+                s9 << r13
+                if r13
+                  if has_terminal?("ALIAS", false, index)
+                    r14 = instantiate_node(SyntaxNode,input, index...(index + 5))
+                    @index += 5
+                  else
+                    terminal_parse_failure("ALIAS")
+                    r14 = nil
+                  end
+                  s9 << r14
+                  if r14
+                    r15 = _nt_space
+                    s9 << r15
+                    if r15
+                      r16 = _nt_host
+                      s9 << r16
+                    end
+                  end
+                end
+              end
+            end
+          end
+          if s9.last
+            r9 = instantiate_node(SyntaxNode,input, i9...index, s9)
+            r9.extend(AliasRecord1)
+          else
+            @index = i9
+            r9 = nil
+          end
+          if r9
+            r0 = r9
+            r0.extend(AliasRecord4)
+          else
+            i17, s17 = index, []
+            r18 = _nt_host
+            s17 << r18
+            if r18
+              r19 = _nt_space
+              s17 << r19
+              if r19
+                r20 = _nt_ttl
+                s17 << r20
+                if r20
+                  if has_terminal?("ALIAS", false, index)
+                    r21 = instantiate_node(SyntaxNode,input, index...(index + 5))
+                    @index += 5
+                  else
+                    terminal_parse_failure("ALIAS")
+                    r21 = nil
+                  end
+                  s17 << r21
+                  if r21
+                    r22 = _nt_space
+                    s17 << r22
+                    if r22
+                      r23 = _nt_host
+                      s17 << r23
+                    end
+                  end
+                end
+              end
+            end
+            if s17.last
+              r17 = instantiate_node(SyntaxNode,input, i17...index, s17)
+              r17.extend(AliasRecord2)
+            else
+              @index = i17
+              r17 = nil
+            end
+            if r17
+              r0 = r17
+              r0.extend(AliasRecord4)
+            else
+              i24, s24 = index, []
+              r25 = _nt_host
+              s24 << r25
+              if r25
+                r26 = _nt_space
+                s24 << r26
+                if r26
+                  r27 = _nt_klass
+                  s24 << r27
+                  if r27
+                    if has_terminal?("ALIAS", false, index)
+                      r28 = instantiate_node(SyntaxNode,input, index...(index + 5))
+                      @index += 5
+                    else
+                      terminal_parse_failure("ALIAS")
+                      r28 = nil
+                    end
+                    s24 << r28
+                    if r28
+                      r29 = _nt_space
+                      s24 << r29
+                      if r29
+                        r30 = _nt_host
+                        s24 << r30
+                      end
+                    end
+                  end
+                end
+              end
+              if s24.last
+                r24 = instantiate_node(SyntaxNode,input, i24...index, s24)
+                r24.extend(AliasRecord3)
+              else
+                @index = i24
+                r24 = nil
+              end
+              if r24
+                r0 = r24
+                r0.extend(AliasRecord4)
+              else
+                @index = i0
+                r0 = nil
+              end
+            end
+          end
+        end
+
+        node_cache[:alias_record][start_index] = r0
 
         r0
       end
