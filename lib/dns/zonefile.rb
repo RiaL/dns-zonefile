@@ -50,6 +50,7 @@ module DNS
 	    when 'SRV'    then @records << SRV.new(@vars, e)
 	    when 'SPF'    then @records << SPF.new(@vars, e)
 	    when 'TXT'    then @records << TXT.new(@vars, e)
+      when 'ALIAS'  then @records << ALIAS.new(@vars, e)
 	    when 'SOA'    then ;
 	    else
 	      raise UnknownRecordType, "Unknown record type: #{e.record_type}"
@@ -304,5 +305,23 @@ module DNS
 
     class SPF < TXT
     end
+    
+    class ALIAS < Record
+      attr_accessor :host, :address
+
+      inheriting_writer_for_at  :host
+
+      def initialize(vars, zonefile_record)
+      	@vars = vars
+      	if zonefile_record
+      	  self.host         = zonefile_record.host.to_s
+      	  @vars[:last_host] = self.host
+      	  self.ttl          = zonefile_record.ttl.to_i
+      	  self.klass        = zonefile_record.klass.to_s
+      	  self.domainname   = zonefile_record.target.to_s
+      	end
+      end
+    end
+
   end
 end
