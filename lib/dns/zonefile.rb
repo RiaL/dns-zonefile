@@ -307,9 +307,10 @@ module DNS
     end
     
     class ALIAS < Record
-      attr_accessor :host, :address
+      attr_accessor :host, :domainname
 
       inheriting_writer_for_at  :host
+      writer_for_at :domainname
 
       def initialize(vars, zonefile_record)
       	@vars = vars
@@ -321,6 +322,9 @@ module DNS
       	  self.domainname   = zonefile_record.target.to_s
       	end
       end
+
+      alias :target :domainname
+      alias :alias :host
     end
 
   end
